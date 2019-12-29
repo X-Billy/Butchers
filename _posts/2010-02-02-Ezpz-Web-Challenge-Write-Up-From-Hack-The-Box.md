@@ -4,8 +4,7 @@ layout: post
 title: Ezpz Web Challenge Write Up From Hack The Box
 subtitle: Its an easy web challenge, and we will butch it
 description: >-
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua.
+  We Are Always Here for Inject
 image: >-
   https://i.imgur.com/XnJ1KF4.png
 optimized_image: >-
