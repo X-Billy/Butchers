@@ -1,13 +1,14 @@
 # Site Settings
 name: Butchers
-title: Butchers | We Are Always Here To Inject
+title: Butchers | We Are Always Here for Inject
 description: This Blog For Cyber Security Writeups
 tags:
   - blog
-  - template
-  - jekyll
-  - theme
-  - netlify
+  - Web
+  - Hack The Box
+  - Buffer over flow
+  - Assimbly
+  - Python
 email: 0xxbilly@gmail.com
 disqus_username: disqus_username
 show_hero: true
